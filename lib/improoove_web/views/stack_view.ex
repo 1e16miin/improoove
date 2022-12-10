@@ -3,12 +3,16 @@ defmodule ImproooveWeb.StackView do
   alias ImproooveWeb.StackView
 
   def render("index.json", %{stacks: stacks, page_info: page_info}) do
-    %{data: render_many(stacks, StackView, "stack.json"),
-    page_info: %{
-    after: page_info.after,
-    limit: page_info.limit,
-    total_count: page_info.total_count
-  }}
+    %{
+      data: render_many(stacks, StackView, "stack.json"),
+      cursor: page_info.before,
+      limit: page_info.limit,
+      total_count: page_info.total_count
+    }
+  end
+
+  def render("index.json", %{stacks: stacks}) do
+    %{data: render_many(stacks, StackView, "stack.json")}
   end
 
   def render("show.json", %{stack: stack}) do

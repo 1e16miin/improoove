@@ -1,5 +1,4 @@
 defmodule ImproooveWeb.Router do
-  alias Plug.BasicAuth
   use ImproooveWeb, :router
 
   pipeline :api do
@@ -16,6 +15,7 @@ defmodule ImproooveWeb.Router do
     patch "/project/:id", ProjectController, :update
     delete "/project/:id", ProjectController, :remove
     get "/stack/index", StackController, :index
+    get "/stack/index/:project_id", StackController, :list
     get "/stack/:id", StackController, :show
     post "/stack", StackController, :create
     patch "/stack/:id", StackController, :update

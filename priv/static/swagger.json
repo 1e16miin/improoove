@@ -91,15 +91,17 @@
           "format": "ISO-8601",
           "type": "string"
         },
-        "feedbacks": {
-          "$ref": "#/definitions/Stacks"
+        "feedback_count": {
+          "description": "count of feedbacks",
+          "type": "integer"
         },
         "id": {
           "description": "The ID of project",
           "type": "integer"
         },
-        "logs": {
-          "$ref": "#/definitions/Stacks"
+        "log_count": {
+          "description": "count of logs",
+          "type": "integer"
         },
         "name": {
           "description": "name of project",
@@ -116,8 +118,9 @@
         }
       },
       "required": [
+        "feedback_count",
+        "log_count",
         "name",
-        "objective",
         "color",
         "id"
       ],
@@ -580,6 +583,57 @@
           }
         },
         "summary": "Query for stacks",
+        "tags": [
+          "Stack"
+        ]
+      }
+    },
+    "/api/stack/index/{project_id}": {
+      "get": {
+        "description": "Query for Stacks. This operation supports with paging and filtering",
+        "operationId": "list_stacks",
+        "parameters": [
+          {
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "project ID",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "type of stack",
+            "enum": [
+              "LOG",
+              "FEEDBACK"
+            ],
+            "in": "query",
+            "name": "type",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Stacks"
+            }
+          },
+          "400": {
+            "description": "Client Error"
+          }
+        },
+        "summary": "Query for stacks by project id",
         "tags": [
           "Stack"
         ]

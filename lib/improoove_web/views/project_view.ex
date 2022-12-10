@@ -5,11 +5,9 @@ defmodule ImproooveWeb.ProjectView do
   def render("index.json", %{projects: projects, page_info: page_info}) do
     %{
       data: render_many(projects, ProjectView, "project.json"),
-      page_info: %{
-        after: page_info.after,
-        limit: page_info.limit,
-        total_count: page_info.total_count
-      }
+      cursor: page_info.before,
+      limit: page_info.limit,
+      total_count: page_info.total_count
     }
   end
 
@@ -25,8 +23,8 @@ defmodule ImproooveWeb.ProjectView do
       start_date: project.start_date,
       end_date: project.end_date,
       color: project.color,
-      logs: project.logs,
-      feedbacks: project.feedbacks
+      log_count: project.log_count,
+      feedback_count: project.feedback_count
     }
   end
 end

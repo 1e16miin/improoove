@@ -20,12 +20,13 @@ defmodule ImproooveWeb.StackController do
             description(:string, "When was the activity last updated", required: true)
             type(:string, "type of stack", required: true, enum: ["LOG", "FEEDBACK"])
           end
-          example %{
+
+          example(%{
             projectId: 1,
             remind: 1000,
             description: "description",
-            type: "LOG",
-          }
+            type: "LOG"
+          })
         end,
       UpdateStackInput:
         swagger_schema do
@@ -80,6 +81,31 @@ defmodule ImproooveWeb.StackController do
     render(conn, "index.json", stacks: stacks, page_info: page_info)
   end
 
+  swagger_path :list do
+    get("/api/stack/index/{project_id}")
+    summary("Query for stacks by project id")
+    description("Query for Stacks. This operation supports with paging and filtering")
+    produces("application/json")
+    tag("Stack")
+    operation_id("list_stacks")
+    CommonParameters.authorization()
+
+    parameters do
+      project_id(:path, :string, "project ID", required: true)
+      type(:query, :string, "type of stack", required: true, enum: ["LOG", "FEEDBACK"])
+    end
+
+    response(200, "OK", Schema.ref(:Stacks))
+    response(400, "Client Error")
+  end
+
+  def list(conn, args) do
+    [uid] = get_req_header(conn, "authorization")
+
+    stacks = Stacks.list_stacks(uid, args)
+    render(conn, "index.json", stacks: stacks)
+  end
+
   swagger_path :create do
     post("/api/stack")
     summary("create stack")
@@ -99,6 +125,7 @@ defmodule ImproooveWeb.StackController do
 
   def create(conn, stack_param) do
     [uid] = get_req_header(conn, "authorization")
+
     with {:ok, %Stack{} = stack} <- Stacks.create_stack(uid, stack_param) do
       conn
       |> put_status(:created)
