@@ -1,19 +1,21 @@
 defmodule ImproooveWeb.Router do
+  alias Plug.BasicAuth
   use ImproooveWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
     plug PhoenixSwagger.Plug.Validate
+    plug Casex.CamelCaseDecoderPlug
   end
 
   scope "/api", ImproooveWeb do
     pipe_through :api
-    get "/project/index/:uid", ProjectController, :index
+    get "/project/index", ProjectController, :index
     get "/project/:id", ProjectController, :show
     post "/project", ProjectController, :create
     patch "/project/:id", ProjectController, :update
     delete "/project/:id", ProjectController, :remove
-    get "/stack/index/:uid", StackController, :index
+    get "/stack/index", StackController, :index
     get "/stack/:id", StackController, :show
     post "/stack", StackController, :create
     patch "/stack/:id", StackController, :update

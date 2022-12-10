@@ -46,7 +46,8 @@ defmodule Improoove.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:paginator, "~> 1.2.0"},
       {:phoenix_swagger, "~> 0.8"},
-      {:ex_json_schema, "~> 0.5"}
+      {:ex_json_schema, "~> 0.5"},
+      {:casex, "~> 0.4.2"}
     ]
   end
 

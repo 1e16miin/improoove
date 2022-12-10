@@ -21,7 +21,12 @@ defmodule Improoove.TagsTest do
     end
 
     test "create_tag/1 with valid data creates a tag" do
-      valid_attrs = %{int: "some int", log_id: "some log_id", name: "some name", string: "some string"}
+      valid_attrs = %{
+        int: "some int",
+        log_id: "some log_id",
+        name: "some name",
+        string: "some string"
+      }
 
       assert {:ok, %Tag{} = tag} = Tags.create_tag(valid_attrs)
       assert tag.int == "some int"
@@ -36,7 +41,13 @@ defmodule Improoove.TagsTest do
 
     test "update_tag/2 with valid data updates the tag" do
       tag = tag_fixture()
-      update_attrs = %{int: "some updated int", log_id: "some updated log_id", name: "some updated name", string: "some updated string"}
+
+      update_attrs = %{
+        int: "some updated int",
+        log_id: "some updated log_id",
+        name: "some updated name",
+        string: "some updated string"
+      }
 
       assert {:ok, %Tag{} = tag} = Tags.update_tag(tag, update_attrs)
       assert tag.int == "some updated int"

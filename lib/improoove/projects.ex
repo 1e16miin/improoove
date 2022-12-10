@@ -17,8 +17,7 @@ defmodule Improoove.Projects do
       [%Project{}, ...]
 
   """
-
-  def list_projects(uid, page_size \\ 20, cursor \\ 99999999) do
+  def list_projects(uid, %{"cursor" => cursor, "limit" => limit}) do
     query =
       from(p in Project,
         where: p.uid == ^uid,
@@ -26,12 +25,25 @@ defmodule Improoove.Projects do
       )
 
     Repo.paginate(query,
-      include_total_count: true,
-      before: cursor,
-      cursor_fields: [:id],
-      limit: page_size
+      after: cursor,
+      cursor_fields: [id: :asc],
+      limit: String.to_integer(limit)
     )
   end
+
+  def list_projects(uid, %{"limit" => limit}) do
+    query =
+      from(p in Project,
+        where: p.uid == ^uid,
+        order_by: [asc: p.id]
+      )
+
+    Repo.paginate(query,
+    cursor_fields: [id: :asc],
+    limit: String.to_integer(limit)
+    )
+  end
+
 
   @doc """
   Gets a single project.
@@ -63,7 +75,10 @@ defmodule Improoove.Projects do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_project(attrs \\ %{}) do
+  def create_project(uid, attrs) do
+    attrs =
+      Map.merge(%{"uid" => uid}, attrs)
+
     %Project{}
     |> Project.changeset(attrs)
     |> Repo.insert()

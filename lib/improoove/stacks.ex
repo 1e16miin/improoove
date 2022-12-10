@@ -17,27 +17,39 @@ defmodule Improoove.Stacks do
       [%Stack{}, ...]
 
   """
-  def list_stacks(uid, page_size, cursor) do
+  def list_stacks(uid, %{"cursor" => cursor, "limit" => limit}) do
     query =
-      from s in Stack,
+      (from s in Stack,
         where: s.uid == ^uid,
-        order_by: [desc: s.id],
-        select: {s}
+        order_by: [desc: s.id])
 
     Repo.paginate(query,
-      include_total_count: true,
       before: cursor,
-      cursor_fields: [:id],
-      limit: page_size
+      cursor_fields: [id: :desc],
+      limit: String.to_integer(limit)
     )
   end
 
-  def list_stacks(project_id, type) do
+  def list_stacks(uid, %{"limit" => limit}) do
+    query =
+      (from s in Stack,
+        where: s.uid == ^uid,
+        order_by: [desc: s.id])
+
+    Repo.paginate(query,
+      cursor_fields: [id: :desc],
+      limit: String.to_integer(limit)
+    )
+  end
+
+  def list_stacks_by_project_id(project_id, type) do
     Stack
     |> where(type: ^type)
     |> where(project_id: ^project_id)
     |> order_by(desc: :id)
+    |> Repo.all()
   end
+
 
   @doc """
   Gets a single stack.
@@ -67,7 +79,10 @@ defmodule Improoove.Stacks do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_stack(attrs \\ %{}) do
+  def create_stack(uid, attrs) do
+    attrs =
+      Map.merge(%{"uid" => uid}, attrs)
+
     %Stack{}
     |> Stack.changeset(attrs)
     |> Repo.insert()

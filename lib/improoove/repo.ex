@@ -3,5 +3,8 @@ defmodule Improoove.Repo do
     otp_app: :improoove,
     adapter: Ecto.Adapters.Postgres
 
-  use Paginator
+  use Paginator,
+    limit: 10,
+    maximum_limit: 100,
+    include_total_count: true
 end

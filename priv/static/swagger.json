@@ -2,12 +2,19 @@
   "definitions": {
     "CreateProjectInput": {
       "description": "Input Schema of project",
+      "example": {
+        "color": "#000000",
+        "endDate": "2020-10-10T00:00:00Z",
+        "name": "name",
+        "objective": "objective",
+        "startDate": "2020-10-01T00:00:00Z"
+      },
       "properties": {
         "color": {
           "description": "project main color",
           "type": "string"
         },
-        "end_date": {
+        "endDate": {
           "description": "when finish project",
           "format": "ISO-8601",
           "type": "string"
@@ -20,33 +27,34 @@
           "description": "goal of project",
           "type": "string"
         },
-        "start_date": {
+        "startDate": {
           "description": "when start project",
           "format": "ISO-8601",
-          "type": "string"
-        },
-        "uid": {
-          "description": "The ID of user",
           "type": "string"
         }
       },
       "required": [
         "name",
         "objective",
-        "color",
-        "uid"
+        "color"
       ],
       "title": "CreateProjectInput",
       "type": "object"
     },
     "CreateStackInput": {
       "description": "Create Schema of Log and Feedback",
+      "example": {
+        "description": "description",
+        "projectId": 1,
+        "remind": 1000,
+        "type": "LOG"
+      },
       "properties": {
         "description": {
           "description": "When was the activity last updated",
           "type": "string"
         },
-        "project_id": {
+        "projectId": {
           "description": "ID of project",
           "type": "integer"
         },
@@ -56,18 +64,17 @@
         },
         "type": {
           "description": "type of stack",
-          "type": "string"
-        },
-        "uid": {
-          "description": "The ID of user",
+          "enum": [
+            "LOG",
+            "FEEDBACK"
+          ],
           "type": "string"
         }
       },
       "required": [
         "type",
         "description",
-        "project_id",
-        "uid"
+        "projectId"
       ],
       "title": "Create Stack Input",
       "type": "object"
@@ -79,13 +86,17 @@
           "description": "project main color",
           "type": "string"
         },
-        "end_date": {
+        "endDate": {
           "description": "when finish project",
           "format": "ISO-8601",
           "type": "string"
         },
         "feedbacks": {
           "$ref": "#/definitions/Stacks"
+        },
+        "id": {
+          "description": "The ID of project",
+          "type": "integer"
         },
         "logs": {
           "$ref": "#/definitions/Stacks"
@@ -98,13 +109,9 @@
           "description": "goal of project",
           "type": "string"
         },
-        "start_date": {
+        "startDate": {
           "description": "when start project",
           "format": "ISO-8601",
-          "type": "string"
-        },
-        "uid": {
-          "description": "The ID of user",
           "type": "string"
         }
       },
@@ -112,7 +119,7 @@
         "name",
         "objective",
         "color",
-        "uid"
+        "id"
       ],
       "title": "Project",
       "type": "object"
@@ -132,7 +139,11 @@
           "description": "description of stack",
           "type": "string"
         },
-        "project_id": {
+        "id": {
+          "description": "The ID of stack",
+          "type": "integer"
+        },
+        "projectId": {
           "description": "ID of project",
           "type": "integer"
         },
@@ -141,19 +152,19 @@
           "type": "integer"
         },
         "type": {
-          "description": "type of stack, FEEDBACK | LOG",
-          "type": "string"
-        },
-        "uid": {
-          "description": "The ID of user",
+          "description": "type of stack",
+          "enum": [
+            "LOG",
+            "FEEDBACK"
+          ],
           "type": "string"
         }
       },
       "required": [
         "type",
         "description",
-        "project_id",
-        "uid"
+        "projectId",
+        "id"
       ],
       "title": "Stack",
       "type": "object"
@@ -168,12 +179,19 @@
     },
     "UpdateProjectInput": {
       "description": "Update Schema of project",
+      "example": {
+        "color": "#000000",
+        "endDate": "2020-10-10T00:00:00Z",
+        "name": "name",
+        "objective": "objective",
+        "startDate": "2020-10-01T00:00:00Z"
+      },
       "properties": {
         "color": {
           "description": "project main color",
           "type": "string"
         },
-        "end_date": {
+        "endDate": {
           "description": "when finish project",
           "format": "ISO-8601",
           "type": "string"
@@ -186,19 +204,14 @@
           "description": "goal of project",
           "type": "string"
         },
-        "start_date": {
+        "startDate": {
           "description": "when start project",
           "format": "ISO-8601",
-          "type": "string"
-        },
-        "uid": {
-          "description": "The ID of user",
           "type": "string"
         }
       },
       "required": [
-        "name",
-        "uid"
+        "name"
       ],
       "title": "UpdateProjectInput",
       "type": "object"
@@ -234,6 +247,13 @@
         "operationId": "create_project",
         "parameters": [
           {
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
             "description": "project attributes",
             "in": "body",
             "name": "project",
@@ -263,104 +283,18 @@
         ]
       }
     },
-    "/api/project/index/{uid}": {
-      "get": {
-        "description": "Query for projects. This operation supports with paging and filtering",
-        "operationId": "list_projects",
-        "parameters": [
-          {
-            "description": "Number of elements per page",
-            "in": "query",
-            "minimum": 1,
-            "name": "page_size",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "description": "Offset of first element in the page",
-            "in": "query",
-            "name": "cursor",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "description": "user ID",
-            "in": "path",
-            "name": "uid",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "description": "page size",
-            "in": "query",
-            "name": "page_size",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "description": "cursor",
-            "in": "query",
-            "name": "cursor",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Projects"
-            }
-          },
-          "400": {
-            "description": "Client Error"
-          }
-        },
-        "summary": "Query for projects",
-        "tags": [
-          "Project"
-        ]
-      }
-    },
-    "/api/project/{id}": {
-      "get": {
-        "description": "Query for project. This operation supports filtering",
-        "operationId": "get_project!",
-        "parameters": [
-          {
-            "description": "project ID",
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Project"
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "summary": "Query for project",
-        "tags": [
-          "Project"
-        ]
-      },
+    "/api/project/:id": {
       "patch": {
         "description": "update project. This operation supports updating",
         "operationId": "update_project",
         "parameters": [
+          {
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
           {
             "description": "project ID",
             "in": "path",
@@ -398,13 +332,106 @@
         ]
       }
     },
-    "/api/project/{project_id}": {
-      "delete": {
-        "description": "Delete stack. This operation supports deleting",
-        "operationId": "delete_stack",
+    "/api/project/index": {
+      "get": {
+        "description": "Query for projects. This operation supports with paging and filtering",
+        "operationId": "list_projects",
         "parameters": [
           {
-            "description": "stack ID",
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "cursor",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "default": 10,
+            "description": "size of page",
+            "in": "query",
+            "name": "limit",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Projects"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "summary": "Query for projects",
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/api/project/{id}": {
+      "delete": {
+        "description": "Delete project. This operation supports deleting",
+        "operationId": "delete_project",
+        "parameters": [
+          {
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "project ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "summary": "delete project",
+        "tags": [
+          "Project"
+        ]
+      },
+      "get": {
+        "description": "Query for project. This operation supports filtering",
+        "operationId": "get_project!",
+        "parameters": [
+          {
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "project ID",
             "in": "path",
             "name": "id",
             "required": true,
@@ -418,11 +445,48 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Stack"
+              "$ref": "#/definitions/Project"
             }
           },
           "400": {
-            "description": "Client Error"
+            "description": "Bad Request"
+          }
+        },
+        "summary": "Query for project",
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/api/project/{project_id}": {
+      "delete": {
+        "description": "Delete stack. This operation supports deleting",
+        "operationId": "delete_stack",
+        "parameters": [
+          {
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "stack ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         },
         "summary": "delete stack",
@@ -436,6 +500,13 @@
         "description": "Create stack. This operation supports creating",
         "operationId": "create_stack",
         "parameters": [
+          {
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
           {
             "description": "stack attributes",
             "in": "body",
@@ -466,32 +537,32 @@
         ]
       }
     },
-    "/api/stack/index/{uid}": {
+    "/api/stack/index": {
       "get": {
         "description": "Query for Stacks. This operation supports with paging and filtering",
         "operationId": "list_stacks",
         "parameters": [
           {
-            "description": "Number of elements per page",
-            "in": "query",
-            "minimum": 1,
-            "name": "page_size",
-            "required": false,
-            "type": "integer"
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
           },
           {
-            "description": "Offset of first element in the page",
+            "description": "cursor",
             "in": "query",
             "name": "cursor",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
-            "description": "user ID",
-            "in": "path",
-            "name": "uid",
+            "default": 10,
+            "description": "size of page",
+            "in": "query",
+            "name": "limit",
             "required": true,
-            "type": "string"
+            "type": "integer"
           }
         ],
         "produces": [
@@ -520,7 +591,14 @@
         "operationId": "get_stack!",
         "parameters": [
           {
-            "description": "project ID",
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "stack ID",
             "in": "path",
             "name": "id",
             "required": true,
@@ -551,11 +629,18 @@
         "operationId": "update_stack",
         "parameters": [
           {
-            "description": "project ID",
+            "description": "uid",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "stack ID",
             "in": "path",
             "name": "id",
             "required": true,
-            "type": "integer"
+            "type": "string"
           },
           {
             "description": "partial project attributes",
@@ -571,7 +656,7 @@
           "application/json"
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Stack"
