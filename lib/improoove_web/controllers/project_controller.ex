@@ -23,13 +23,14 @@ defmodule ImproooveWeb.ProjectController do
             startDate(:string, "when start project", format: "ISO-8601")
             name(:string, "name of project", required: true)
           end
-          example %{
+
+          example(%{
             color: "#000000",
             objective: "objective",
             endDate: "2020-10-10T00:00:00Z",
             startDate: "2020-10-01T00:00:00Z",
             name: "name"
-          }
+          })
         end,
       UpdateProjectInput:
         swagger_schema do
@@ -43,13 +44,14 @@ defmodule ImproooveWeb.ProjectController do
             startDate(:string, "when start project", format: "ISO-8601")
             name(:string, "name of project", required: true)
           end
-          example %{
+
+          example(%{
             color: "#000000",
             objective: "objective",
             endDate: "2020-10-10T00:00:00Z",
             startDate: "2020-10-01T00:00:00Z",
             name: "name"
-          }
+          })
         end,
       Project:
         swagger_schema do
@@ -59,12 +61,12 @@ defmodule ImproooveWeb.ProjectController do
           properties do
             id(:integer, "The ID of project", required: true)
             color(:string, "project main color", required: true)
-            objective(:string, "goal of project", required: true)
+            objective(:string, "goal of project")
             endDate(:string, "when finish project", format: "ISO-8601")
             startDate(:string, "when start project", format: "ISO-8601")
             name(:string, "name of project", required: true)
-            logs(Schema.ref(:Stacks))
-            feedbacks(Schema.ref(:Stacks))
+            log_count(:integer, "count of logs", required: true)
+            feedback_count(:integer, "count of feedbacks", required: true)
           end
         end,
       Projects:
@@ -78,12 +80,12 @@ defmodule ImproooveWeb.ProjectController do
   end
 
   defp make_project(%{id: id} = project) do
-    logs = Stacks.list_stacks_by_project_id(id, "LOG")
-    feedbacks = Stacks.list_stacks_by_project_id(id, "FEEDBACK")
+    log_count = Stacks.count_stacks(id, "LOG")
+    feedback_count = Stacks.count_stacks(id, "FEEDBACK")
 
     project
-    |> Map.put(:logs, logs)
-    |> Map.put(:feedbacks, feedbacks)
+    |> Map.put(:log_count, log_count)
+    |> Map.put(:feedback_count, feedback_count)
   end
 
   swagger_path :index do
@@ -159,6 +161,7 @@ defmodule ImproooveWeb.ProjectController do
 
   def show(conn, %{"id" => id}) do
     [uid] = get_req_header(conn, "authorization")
+
     project =
       Projects.get_project!(id)
       |> make_project

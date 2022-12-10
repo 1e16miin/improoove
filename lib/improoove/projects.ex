@@ -39,11 +39,10 @@ defmodule Improoove.Projects do
       )
 
     Repo.paginate(query,
-    cursor_fields: [id: :asc],
-    limit: String.to_integer(limit)
+      cursor_fields: [id: :asc],
+      limit: String.to_integer(limit)
     )
   end
-
 
   @doc """
   Gets a single project.
@@ -76,8 +75,7 @@ defmodule Improoove.Projects do
 
   """
   def create_project(uid, attrs) do
-    attrs =
-      Map.merge(%{"uid" => uid}, attrs)
+    attrs = Map.merge(%{"uid" => uid}, attrs)
 
     %Project{}
     |> Project.changeset(attrs)
