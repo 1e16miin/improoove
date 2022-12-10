@@ -3,10 +3,34 @@ defmodule ImproooveWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug PhoenixSwagger.Plug.Validate
   end
 
   scope "/api", ImproooveWeb do
     pipe_through :api
+    get "/project/index/:uid", ProjectController, :index
+    get "/project/:id", ProjectController, :show
+    post "/project", ProjectController, :create
+    patch "/project/:id", ProjectController, :update
+    delete "/project/:id", ProjectController, :remove
+    get "/stack/index/:uid", StackController, :index
+    get "/stack/:id", StackController, :show
+    post "/stack", StackController, :create
+    patch "/stack/:id", StackController, :update
+    delete "/stack/:id", StackController, :remove
+  end
+
+  scope "/api/swagger-ui" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :improoove, swagger_file: "swagger.json"
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "Improoove App"
+      }
+    }
   end
 
   # Enables LiveDashboard only for development

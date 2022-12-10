@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:13.7
+    restart: always
+    container_name: improoove
+    environment:
+      POSTGRES_DB: improoove
+      POSTGRES_USER: dotdot
+      POSTGRES_PASSWORD: 1234
+      TZ: UTC
+    ports:
+      - "5432:5432"

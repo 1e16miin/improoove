@@ -24,6 +24,4 @@ improoove-*.tar
 
 mix.lock
 
-/config/
-
 /.elixir_ls/

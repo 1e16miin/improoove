@@ -19,7 +19,7 @@ defmodule Improoove.Application do
       # Start a worker by calling: Improoove.Worker.start_link(arg)
       # {Improoove.Worker, arg}
     ]
-
+    PhoenixSwagger.Validator.parse_swagger_schema("priv/static/swagger.json")
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Improoove.Supervisor]
