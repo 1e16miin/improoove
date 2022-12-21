@@ -132,8 +132,8 @@ defmodule ImproooveWeb.ProjectController do
     with {:ok, %Project{} = project} <- Projects.create_project(uid, project_params) do
       new_project =
         project
-        |> Map.put(:logs, [])
-        |> Map.put(:feedbacks, [])
+        |> Map.put(:log_count, 0)
+        |> Map.put(:feedback_count, 0)
 
       conn
       |> put_status(:created)
