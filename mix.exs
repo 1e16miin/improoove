@@ -48,7 +48,8 @@ defmodule Improoove.MixProject do
       {:phoenix_swagger, "~> 0.8"},
       {:ex_json_schema, "~> 0.5"},
       {:casex, "~> 0.4.2"},
-      {:fcmex, "~> 0.6.0"}
+      {:fcmex, "~> 0.6.0"},
+      {:cors_plug, "~> 3.0"},
     ]
   end
 
