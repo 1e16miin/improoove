@@ -2,7 +2,6 @@ defmodule ImproooveWeb.Router do
   use ImproooveWeb, :router
 
   pipeline :api do
-    plug CORSPlug
     plug :accepts, ["json"]
     plug PhoenixSwagger.Plug.Validate
     plug Casex.CamelCaseDecoderPlug
