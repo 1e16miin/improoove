@@ -15,12 +15,6 @@ config :improoove, Improoove.Repo,
   priv: "priv/repo",
   migration_timestamps: [type: :utc_datetime, inserted_at: :created_at]
 
-
-config :cors_plug,
-  origin: ["http://3.37.83.68:4001"],
-  max_age: 86400,
-  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"]
-
 # Configures the endpoint
 config :improoove, ImproooveWeb.Endpoint,
   url: [host: "localhost"],
