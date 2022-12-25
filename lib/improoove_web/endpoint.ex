@@ -45,6 +45,6 @@ defmodule ImproooveWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
 
-  plug CORSPlug
+  plug ImproooveWeb.CORS
   plug ImproooveWeb.Router
 end

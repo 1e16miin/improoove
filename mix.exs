@@ -49,7 +49,8 @@ defmodule Improoove.MixProject do
       {:ex_json_schema, "~> 0.5"},
       {:casex, "~> 0.4.2"},
       {:fcmex, "~> 0.6.0"},
-      {:cors_plug, "~> 3.0"},
+      {:plug, "~> 1.0"},
+      {:corsica, "~> 1.0"},
     ]
   end
 
