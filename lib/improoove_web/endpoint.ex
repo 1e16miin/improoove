@@ -45,6 +45,7 @@ defmodule ImproooveWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
 
-  plug ImproooveWeb.CORS
+  plug Corsica, max_age: 600, origins: "*"
+  plug Plug.Static
   plug ImproooveWeb.Router
 end
