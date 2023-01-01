@@ -105,6 +105,7 @@ defmodule ImproooveWeb.ProjectController do
   def index(conn, args) do
     [uid] = get_req_header(conn, "authorization")
     %{entries: entries, metadata: page_info} = Projects.list_projects(uid, args)
+    IO.inspect(page_info)
     projects = Enum.map(entries, fn project -> make_project(project) end)
     render(conn, "index.json", projects: projects, page_info: page_info)
   end
