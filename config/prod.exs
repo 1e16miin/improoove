@@ -13,7 +13,7 @@ import Config
 
 config :improoove, ImproooveWeb.Endpoint,
   load_from_system_env: true, # Expects url host and port to be configured in Endpoint.init callback
-  url: [host: "http://3.37.83.68/", port: 4001],
+  url: [host: "http://3.37.83.68/", port: 4001]
 
 # Do not print debug messages in production
 config :logger, level: :info
