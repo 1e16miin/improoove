@@ -23,5 +23,7 @@ erl_crash.dump
 improoove-*.tar
 
 mix.lock
-
+/priv/static
 /.elixir_ls/
+
+/priv/gettext
