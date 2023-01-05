@@ -180,7 +180,7 @@ defmodule ImproooveWeb.StackController do
   end
 
   swagger_path :remove do
-    delete("/api/project/{project_id}")
+    delete("/api/stack/{stack_id}")
     summary("delete stack")
     description("Delete stack. This operation supports deleting")
     produces("application/json")
