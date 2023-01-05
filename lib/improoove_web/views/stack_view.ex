@@ -23,7 +23,6 @@ defmodule ImproooveWeb.StackView do
     %{
       id: stack.id,
       project_id: stack.project_id,
-      remind: stack.remind,
       description: stack.description,
       created_at: stack.created_at,
       type: stack.type

@@ -16,14 +16,12 @@ defmodule ImproooveWeb.StackController do
 
           properties do
             projectId(:integer, "ID of project", required: true)
-            remind(:integer, "When to send the reminder after create log")
             description(:string, "When was the activity last updated", required: true)
             type(:string, "type of stack", required: true, enum: ["LOG", "FEEDBACK"])
           end
 
           example(%{
             projectId: 1,
-            remind: 1000,
             description: "description",
             type: "LOG"
           })
@@ -34,7 +32,6 @@ defmodule ImproooveWeb.StackController do
           description("Update Schema of Log and Feedback")
 
           properties do
-            remind(:integer, "When to send the reminder after create log")
             description(:string, "When was the activity last updated", required: true)
           end
         end,
@@ -46,7 +43,6 @@ defmodule ImproooveWeb.StackController do
           properties do
             id(:integer, "The ID of stack", required: true)
             projectId(:integer, "ID of project", required: true)
-            remind(:integer, "When to send the reminder after create log")
             description(:string, "description of stack", required: true)
             type(:string, "type of stack", required: true, enum: ["LOG", "FEEDBACK"])
           end
@@ -72,6 +68,7 @@ defmodule ImproooveWeb.StackController do
     CommonParameters.pagination()
     response(200, "OK", Schema.ref(:Stacks))
     response(400, "Client Error")
+    response(401, "Unauthorized")
   end
 
   def index(%Plug.Conn{assigns: %{user_id: user_id}} = conn, args) do
@@ -95,6 +92,7 @@ defmodule ImproooveWeb.StackController do
 
     response(200, "OK", Schema.ref(:Stacks))
     response(400, "Client Error")
+    response(401, "Unauthorized")
   end
 
   def list(%Plug.Conn{assigns: %{user_id: user_id}} = conn, args) do
@@ -116,6 +114,7 @@ defmodule ImproooveWeb.StackController do
     end
 
     response(201, "OK", Schema.ref(:Stack))
+    response(401, "Unauthorized")
     response(422, "Validation Error")
   end
 
@@ -126,6 +125,9 @@ defmodule ImproooveWeb.StackController do
       |> put_status(:created)
       |> put_resp_header("location", Routes.stack_path(conn, :show, stack))
       |> render("show.json", stack: stack)
+    else
+     _ -> conn
+      |> put_status(:validation_error)
     end
   end
 
@@ -144,6 +146,8 @@ defmodule ImproooveWeb.StackController do
 
     response(200, "OK", Schema.ref(:Stack))
     response(400, "Bad Request")
+    response(401, "Unauthorized")
+    response(404, "Not Found")
   end
 
   def show(conn, %{"id" => id}) do
@@ -166,6 +170,8 @@ defmodule ImproooveWeb.StackController do
     end
 
     response(200, "OK", Schema.ref(:Stack))
+    response(401, "Unauthorized")
+    response(404, "Not Found")
     response(422, "Validation Error")
   end
 
@@ -174,6 +180,9 @@ defmodule ImproooveWeb.StackController do
 
     with {:ok, %Stack{} = stack} <- Stacks.update_stack(stack, stack_param) do
       render(conn, "show.json", stack: stack)
+    else
+      _ -> conn
+       |> put_status(:validation_error)
     end
   end
 
@@ -192,6 +201,8 @@ defmodule ImproooveWeb.StackController do
 
     response(204, "No Content")
     response(400, "Bad Request")
+    response(401, "Unauthorized")
+    response(404, "Not Found")
   end
 
   def remove(conn, %{"id" => id}) do
