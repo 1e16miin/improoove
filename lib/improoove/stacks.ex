@@ -17,23 +17,23 @@ defmodule Improoove.Stacks do
       [%Stack{}, ...]
 
   """
-  def list_stacks(uid, %{"cursor" => cursor, "limit" => limit}) do
+  def list_stacks(user_id, %{"cursor" => cursor, "limit" => limit}) do
     query =
       from s in Stack,
-        where: s.uid == ^uid,
+        where: s.user_id == ^user_id,
         order_by: [desc: s.id]
 
     Repo.paginate(query,
-      before: cursor,
+      after: cursor,
       cursor_fields: [id: :desc],
       limit: String.to_integer(limit)
     )
   end
 
-  def list_stacks(uid, %{"limit" => limit}) do
+  def list_stacks(user_id, %{"limit" => limit}) do
     query =
       from s in Stack,
-        where: s.uid == ^uid,
+        where: s.user_id == ^user_id,
         order_by: [desc: s.id]
 
     Repo.paginate(query,
@@ -42,7 +42,7 @@ defmodule Improoove.Stacks do
     )
   end
 
-  def list_stacks(_uid, %{"project_id" => project_id, "type" => type}) do
+  def list_stacks(_user_id, %{"project_id" => project_id, "type" => type}) do
     Stack
     |> where(type: ^type)
     |> where(project_id: ^project_id)
@@ -86,8 +86,8 @@ defmodule Improoove.Stacks do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_stack(uid, attrs) do
-    attrs = Map.merge(%{"uid" => uid}, attrs)
+  def create_stack(user_id, attrs) do
+    attrs = Map.merge(%{"user_id" => user_id}, attrs)
 
     %Stack{}
     |> Stack.changeset(attrs)

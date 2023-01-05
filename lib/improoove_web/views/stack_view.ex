@@ -5,7 +5,7 @@ defmodule ImproooveWeb.StackView do
   def render("index.json", %{stacks: stacks, page_info: page_info}) do
     %{
       data: render_many(stacks, StackView, "stack.json"),
-      cursor: page_info.before,
+      cursor: page_info.after,
       limit: page_info.limit,
       total_count: page_info.total_count
     }
