@@ -23,8 +23,9 @@ defmodule Improoove.Accounts do
 
   """
   def get_user_by_uid!(uid) do
-    Repo.get_by!(User, [uid: uid])
+    Repo.get_by!(User, uid: uid)
   end
+
   @doc """
   Creates a user.
 
@@ -39,6 +40,7 @@ defmodule Improoove.Accounts do
   """
   def create_user() do
     attrs = %{"uid" => UUID.uuid4()}
+
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
