@@ -115,19 +115,15 @@ defmodule ImproooveWeb.StackController do
 
     response(201, "OK", Schema.ref(:Stack))
     response(401, "Unauthorized")
-    response(422, "Validation Error")
+    response(422, "Unprocessable Entity")
   end
 
   def create(%Plug.Conn{assigns: %{user_id: user_id}} = conn, stack_param) do
-
     with {:ok, %Stack{} = stack} <- Stacks.create_stack(user_id, stack_param) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.stack_path(conn, :show, stack))
       |> render("show.json", stack: stack)
-    else
-     _ -> conn
-      |> put_status(:validation_error)
     end
   end
 
@@ -172,7 +168,7 @@ defmodule ImproooveWeb.StackController do
     response(200, "OK", Schema.ref(:Stack))
     response(401, "Unauthorized")
     response(404, "Not Found")
-    response(422, "Validation Error")
+    response(422, "Unprocessable Entity")
   end
 
   def update(conn, %{"id" => id} = stack_param) do
@@ -180,9 +176,6 @@ defmodule ImproooveWeb.StackController do
 
     with {:ok, %Stack{} = stack} <- Stacks.update_stack(stack, stack_param) do
       render(conn, "show.json", stack: stack)
-    else
-      _ -> conn
-       |> put_status(:validation_error)
     end
   end
 
