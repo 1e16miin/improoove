@@ -12,7 +12,8 @@ import Config
 # config :improoove, ImproooveWeb.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
 
 config :improoove, ImproooveWeb.Endpoint,
-  load_from_system_env: true, # Expects url host and port to be configured in Endpoint.init callback
+  # Expects url host and port to be configured in Endpoint.init callback
+  load_from_system_env: true,
   url: [host: "http://3.37.83.68/", port: 4001]
 
 # Do not print debug messages in production

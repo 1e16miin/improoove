@@ -7,20 +7,36 @@ defmodule ImproooveWeb.Router do
     plug Casex.CamelCaseDecoderPlug
   end
 
+  pipeline :auth do
+
+  end
+
   scope "/api", ImproooveWeb do
     pipe_through :api
-    get "/project/index", ProjectController, :index
-    get "/project/:id", ProjectController, :show
-    post "/project", ProjectController, :create
-    patch "/project/:id", ProjectController, :update
-    delete "/project/:id", ProjectController, :remove
-    get "/stack/index", StackController, :index
-    get "/stack/index/:project_id", StackController, :list
-    get "/stack/:id", StackController, :show
-    post "/stack", StackController, :create
-    patch "/stack/:id", StackController, :update
-    delete "/stack/:id", StackController, :remove
+
+    scope "/account" do
+      post "/", UserController, :create
+    end
+
+    scope "/project" do
+      pipe_through :api
+      get "/index", ProjectController, :index
+      get "/:id", ProjectController, :show
+      post "/", ProjectController, :create
+      patch "/:id", ProjectController, :update
+      delete "/:id", ProjectController, :remove
+    end
+
+    scope "/stack" do
+      get "/index", StackController, :index
+      get "/index/:project_id", StackController, :list
+      get "/:id", StackController, :show
+      post "/", StackController, :create
+      patch "/:id", StackController, :update
+      delete "/:id", StackController, :remove
+    end
   end
+
 
   scope "/api/swagger-ui" do
     forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :improoove, swagger_file: "swagger.json"

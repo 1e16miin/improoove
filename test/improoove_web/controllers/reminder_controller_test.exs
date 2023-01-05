@@ -49,7 +49,10 @@ defmodule ImproooveWeb.ReminderControllerTest do
   describe "update reminder" do
     setup [:create_reminder]
 
-    test "renders reminder when data is valid", %{conn: conn, reminder: %Reminder{id: id} = reminder} do
+    test "renders reminder when data is valid", %{
+      conn: conn,
+      reminder: %Reminder{id: id} = reminder
+    } do
       conn = put(conn, Routes.reminder_path(conn, :update, reminder), reminder: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
