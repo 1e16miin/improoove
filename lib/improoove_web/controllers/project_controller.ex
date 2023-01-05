@@ -128,9 +128,7 @@ defmodule ImproooveWeb.ProjectController do
   end
 
   def create(%Plug.Conn{assigns: %{user_id: user_id}} = conn, project_params) do
-    IO.inspect(user_id)
     with {:ok, %Project{} = project} <- Projects.create_project(user_id, project_params) do
-      IO.inspect(project)
 
       new_project =
         project
@@ -141,6 +139,9 @@ defmodule ImproooveWeb.ProjectController do
       |> put_status(:created)
       |> put_resp_header("location", Routes.project_path(conn, :show, new_project))
       |> render("show.json", project: new_project)
+    else
+      _ -> conn
+       |> put_status(:validation_error)
     end
   end
 
@@ -160,6 +161,7 @@ defmodule ImproooveWeb.ProjectController do
     response(200, "OK", Schema.ref(:Project))
     response(400, "Bad Request")
     response(401, "Unauthorized")
+    response(404, "Not Found")
   end
 
   def show(conn, %{"id" => id}) do
@@ -167,7 +169,6 @@ defmodule ImproooveWeb.ProjectController do
     project =
       Projects.get_project!(id)
       |> make_project
-      |> IO.inspect()
 
     render(conn, "show.json", project: project)
   end
@@ -188,6 +189,7 @@ defmodule ImproooveWeb.ProjectController do
 
     response(201, "OK", Schema.ref(:Project))
     response(401, "Unauthorized")
+    response(404, "Not Found")
     response(422, "Validation Error")
   end
 
@@ -196,6 +198,9 @@ defmodule ImproooveWeb.ProjectController do
 
     with {:ok, %Project{} = project} <- Projects.update_project(project, project_param) do
       render(conn, "show.json", project: project)
+    else
+      _ -> conn
+       |> put_status(:validation_error)
     end
   end
 
@@ -215,6 +220,7 @@ defmodule ImproooveWeb.ProjectController do
     response(204, "No Content")
     response(400, "Bad Request")
     response(401, "Unauthorized")
+    response(404, "Not Found")
   end
 
   def remove(conn, %{"id" => id}) do

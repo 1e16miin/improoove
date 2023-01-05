@@ -22,6 +22,10 @@ config :improoove, ImproooveWeb.Endpoint,
   pubsub_server: Improoove.PubSub,
   live_view: [signing_salt: "hTTtalSr"]
 
+config :plug, :statuses, %{
+  422 => "Validation Error",
+}
+
 config :improoove, :phoenix_swagger,
   swagger_files: %{
     "priv/static/swagger.json" => [
