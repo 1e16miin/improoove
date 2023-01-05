@@ -13,6 +13,7 @@ defmodule ImproooveWeb.UserController do
         swagger_schema do
           title("User")
           description("User")
+
           properties do
             uid(:string, "uid", required: true)
           end

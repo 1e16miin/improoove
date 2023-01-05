@@ -4,6 +4,7 @@ defmodule ImproooveWeb.Plugs.Authentication do
   def init(opts) do
     opts
   end
+
   def call(conn, :no_args) do
     [authorization] = get_req_header(conn, "authorization")
     {:ok, uid} = Base.decode64(authorization)
