@@ -17,10 +17,10 @@ defmodule Improoove.Projects do
       [%Project{}, ...]
 
   """
-  def list_projects(uid, %{"cursor" => cursor, "limit" => limit}) do
+  def list_projects(user_id, %{"cursor" => cursor, "limit" => limit}) do
     query =
       from(p in Project,
-        where: p.uid == ^uid,
+        where: p.user_id == ^user_id,
         order_by: [asc: p.id]
       )
 
@@ -31,10 +31,10 @@ defmodule Improoove.Projects do
     )
   end
 
-  def list_projects(uid, %{"limit" => limit}) do
+  def list_projects(user_id, %{"limit" => limit}) do
     query =
       from(p in Project,
-        where: p.uid == ^uid,
+        where: p.user_id == ^user_id,
         order_by: [asc: p.id]
       )
 
