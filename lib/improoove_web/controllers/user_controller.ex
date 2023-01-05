@@ -13,7 +13,6 @@ defmodule ImproooveWeb.UserController do
         swagger_schema do
           title("User")
           description("User")
-
           properties do
             uid(:string, "uid", required: true)
           end
@@ -34,8 +33,6 @@ defmodule ImproooveWeb.UserController do
 
   def create(conn, _) do
     with {:ok, %User{} = user} <- Accounts.create_user() do
-      IO.inspect(user)
-
       conn
       |> put_status(:created)
       # |> put_resp_header("location", Routes.user_path(conn, :show, user))
