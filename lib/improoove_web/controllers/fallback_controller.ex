@@ -31,7 +31,7 @@ defmodule ImproooveWeb.FallbackController do
 
   def call(conn, {:error, :internal_server_error}) do
     conn
-    |> put_status(:bad_request)
+    |> put_status(:internal_server_error)
     |> put_view(ImproooveWeb.ErrorView)
     |> render(:"500")
   end
