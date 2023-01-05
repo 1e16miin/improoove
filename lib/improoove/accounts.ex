@@ -22,8 +22,8 @@ defmodule Improoove.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user_by_uid!(uid) do
-    Repo.get_by!(User, uid: uid)
+  def get_user_by_uid(uid) do
+    Repo.get_by(User, uid: uid)
   end
 
   @doc """
