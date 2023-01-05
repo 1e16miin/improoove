@@ -51,9 +51,7 @@ defmodule Improoove.MixProject do
       {:fcmex, "~> 0.6.0"},
       {:plug, "~> 1.0"},
       {:corsica, "~> 1.0"},
-      {:bcrypt_elixir, "~> 3.0"},
-      {:comeonin, "~> 5.3"},
-      { :uuid, "~> 1.1" }
+      {:uuid, "~> 1.1"}
     ]
   end
 

@@ -74,8 +74,8 @@ defmodule Improoove.Projects do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_project(uid, attrs) do
-    attrs = Map.merge(%{"uid" => uid}, attrs)
+  def create_project(user_id, attrs) do
+    attrs = Map.merge(%{"user_id" => user_id}, attrs)
 
     %Project{}
     |> Project.changeset(attrs)

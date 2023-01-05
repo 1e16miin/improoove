@@ -3,7 +3,7 @@ defmodule Improoove.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :uid, :string
+      add :uid, :uuid
 
       timestamps()
     end

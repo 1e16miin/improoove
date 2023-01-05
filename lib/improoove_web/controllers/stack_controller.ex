@@ -74,10 +74,8 @@ defmodule ImproooveWeb.StackController do
     response(400, "Client Error")
   end
 
-  def index(conn, args) do
-    [uid] = get_req_header(conn, "authorization")
-
-    %{entries: stacks, metadata: page_info} = Stacks.list_stacks(uid, args)
+  def index(%Plug.Conn{assigns: %{user_id: user_id}} = conn, args) do
+    %{entries: stacks, metadata: page_info} = Stacks.list_stacks(user_id, args)
     render(conn, "index.json", stacks: stacks, page_info: page_info)
   end
 
@@ -99,10 +97,8 @@ defmodule ImproooveWeb.StackController do
     response(400, "Client Error")
   end
 
-  def list(conn, args) do
-    [uid] = get_req_header(conn, "authorization")
-
-    stacks = Stacks.list_stacks(uid, args)
+  def list(%Plug.Conn{assigns: %{user_id: user_id}} = conn, args) do
+    stacks = Stacks.list_stacks(user_id, args)
     render(conn, "index.json", stacks: stacks)
   end
 
@@ -123,10 +119,9 @@ defmodule ImproooveWeb.StackController do
     response(422, "Validation Error")
   end
 
-  def create(conn, stack_param) do
-    [uid] = get_req_header(conn, "authorization")
+  def create(%Plug.Conn{assigns: %{user_id: user_id}} = conn, stack_param) do
 
-    with {:ok, %Stack{} = stack} <- Stacks.create_stack(uid, stack_param) do
+    with {:ok, %Stack{} = stack} <- Stacks.create_stack(user_id, stack_param) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.stack_path(conn, :show, stack))

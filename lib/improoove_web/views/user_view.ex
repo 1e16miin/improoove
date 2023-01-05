@@ -8,7 +8,7 @@ defmodule ImproooveWeb.UserView do
 
   def render("user.json", %{user: user}) do
     %{
-      uid: user.uid
+      uid: Base.encode64(user.uid)
     }
   end
 end

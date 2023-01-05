@@ -8,7 +8,6 @@ defmodule Improoove.Accounts do
 
   alias Improoove.Accounts.User
 
-
   @doc """
   Gets a single user.
 
@@ -23,8 +22,9 @@ defmodule Improoove.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
-
+  def get_user_by_uid!(uid) do
+    Repo.get_by!(User, [uid: uid])
+  end
   @doc """
   Creates a user.
 
@@ -38,12 +38,9 @@ defmodule Improoove.Accounts do
 
   """
   def create_user() do
-    attrs = %{"uid" => UUID.uuid4(:hex)}
-    IO.inspect(attrs)
-
+    attrs = %{"uid" => UUID.uuid4()}
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
   end
-
 end

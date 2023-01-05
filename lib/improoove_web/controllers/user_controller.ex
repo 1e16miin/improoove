@@ -17,7 +17,7 @@ defmodule ImproooveWeb.UserController do
           properties do
             uid(:string, "uid", required: true)
           end
-        end,
+        end
     }
   end
 
@@ -42,10 +42,4 @@ defmodule ImproooveWeb.UserController do
       |> render("show.json", user: user)
     end
   end
-
-  def show(conn, %{"id" => id}) do
-    user = Accounts.get_user!(id)
-    render(conn, "show.json", user: user)
-  end
-
 end

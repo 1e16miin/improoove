@@ -3,7 +3,7 @@ defmodule Improoove.Repo.Migrations.CreateProjects do
 
   def change do
     create table(:projects) do
-      add :uid, :string, null: false
+      add :user_id, :int, null: false
       add :name, :string, size: 30, null: false
       add :objective, :string, size: 30, null: false
       add :start_date, :utc_datetime

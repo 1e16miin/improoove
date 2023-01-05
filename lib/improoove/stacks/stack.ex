@@ -6,7 +6,7 @@ defmodule Improoove.Stacks.Stack do
     field :description, :string
     field :project_id, :integer
     field :type, :string
-    field :uid, :string
+    field :user_id, :integer
     field :remind, :integer
 
     timestamps([{:inserted_at, :created_at}])
@@ -15,7 +15,7 @@ defmodule Improoove.Stacks.Stack do
   @doc false
   def changeset(stack, attrs) do
     stack
-    |> cast(attrs, [:project_id, :uid, :description, :type, :remind])
-    |> validate_required([:project_id, :uid, :description, :type, :remind])
+    |> cast(attrs, [:project_id, :user_id, :description, :type, :remind])
+    |> validate_required([:project_id, :user_id, :description, :type, :remind])
   end
 end

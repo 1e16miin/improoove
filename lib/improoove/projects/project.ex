@@ -8,7 +8,7 @@ defmodule Improoove.Projects.Project do
     field :name, :string
     field :objective, :string
     field :start_date, :utc_datetime
-    field :uid, :string
+    field :user_id, :integer
 
     timestamps([{:inserted_at, :created_at}])
   end
@@ -16,7 +16,7 @@ defmodule Improoove.Projects.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:uid, :name, :objective, :start_date, :end_date, :color])
-    |> validate_required([:uid, :name, :objective, :start_date, :end_date, :color])
+    |> cast(attrs, [:user_id, :name, :objective, :start_date, :end_date, :color])
+    |> validate_required([:user_id, :name, :objective, :start_date, :end_date, :color])
   end
 end

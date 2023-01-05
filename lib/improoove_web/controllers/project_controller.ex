@@ -99,13 +99,12 @@ defmodule ImproooveWeb.ProjectController do
     CommonParameters.pagination()
     response(200, "OK", Schema.ref(:Projects))
     response(400, "Bad Request")
+    response(401, "Unauthorized")
     response(404, "Not Found")
   end
 
-  def index(conn, args) do
-    [uid] = get_req_header(conn, "authorization")
-    %{entries: entries, metadata: page_info} = Projects.list_projects(uid, args)
-    IO.inspect(page_info)
+  def index(%Plug.Conn{assigns: %{user_id: user_id}} = conn, args) do
+    %{entries: entries, metadata: page_info} = Projects.list_projects(user_id, args)
     projects = Enum.map(entries, fn project -> make_project(project) end)
     render(conn, "index.json", projects: projects, page_info: page_info)
   end
@@ -124,13 +123,15 @@ defmodule ImproooveWeb.ProjectController do
     end
 
     response(201, "OK", Schema.ref(:Project))
+    response(401, "Unauthorized")
     response(422, "Validation Error")
   end
 
-  def create(conn, project_params) do
-    [uid] = get_req_header(conn, "authorization")
+  def create(%Plug.Conn{assigns: %{user_id: user_id}} = conn, project_params) do
+    IO.inspect(user_id)
+    with {:ok, %Project{} = project} <- Projects.create_project(user_id, project_params) do
+      IO.inspect(project)
 
-    with {:ok, %Project{} = project} <- Projects.create_project(uid, project_params) do
       new_project =
         project
         |> Map.put(:log_count, 0)
@@ -158,10 +159,10 @@ defmodule ImproooveWeb.ProjectController do
 
     response(200, "OK", Schema.ref(:Project))
     response(400, "Bad Request")
+    response(401, "Unauthorized")
   end
 
   def show(conn, %{"id" => id}) do
-    [uid] = get_req_header(conn, "authorization")
 
     project =
       Projects.get_project!(id)
@@ -186,11 +187,11 @@ defmodule ImproooveWeb.ProjectController do
     end
 
     response(201, "OK", Schema.ref(:Project))
+    response(401, "Unauthorized")
     response(422, "Validation Error")
   end
 
   def update(conn, %{"id" => id} = project_param) do
-    [uid] = get_req_header(conn, "authorization")
     project = Projects.get_project!(id)
 
     with {:ok, %Project{} = project} <- Projects.update_project(project, project_param) do
@@ -213,10 +214,10 @@ defmodule ImproooveWeb.ProjectController do
 
     response(204, "No Content")
     response(400, "Bad Request")
+    response(401, "Unauthorized")
   end
 
   def remove(conn, %{"id" => id}) do
-    [uid] = get_req_header(conn, "authorization")
     project = Projects.get_project!(id)
 
     with {:ok, %Project{}} <- Projects.delete_project(project) do

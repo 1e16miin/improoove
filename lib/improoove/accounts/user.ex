@@ -3,7 +3,7 @@ defmodule Improoove.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :uid, :string
+    field :uid, Ecto.UUID
 
     timestamps([{:inserted_at, :created_at}])
   end
@@ -13,10 +13,5 @@ defmodule Improoove.Accounts.User do
     user
     |> cast(attrs, [:uid])
     |> validate_required([:uid])
-    |> put_uid_hash()
-  end
-
-  defp put_uid_hash(%Ecto.Changeset{valid?: true, changes: %{uid: uid}} = changeset) do
-    change(changeset, Bcrypt.add_hash(uid, [hash_key: :uid]))
   end
 end
