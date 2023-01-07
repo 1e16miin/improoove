@@ -5,7 +5,6 @@ defmodule Improoove.Repo.Migrations.CreateStacks do
     create table(:stacks) do
       add :project_id, :int, default: 0, null: false
       add :user_id, :int, null: false
-      add :is_remind, :boolean
       add :description, :string, null: false
       add :type, :string, null: false
 
