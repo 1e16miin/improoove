@@ -44,7 +44,7 @@ defmodule ImproooveWeb.StackController do
             id(:integer, "The ID of stack", required: true)
             projectId(:integer, "ID of project", required: true)
             description(:string, "description of stack", required: true)
-            startDate(:string, "when created log or feedback", format: "ISO-8601")
+            createdAt(:string, "when created log or feedback", format: "ISO-8601")
             type(:string, "type of stack", required: true, enum: ["LOG", "FEEDBACK"])
           end
         end,
