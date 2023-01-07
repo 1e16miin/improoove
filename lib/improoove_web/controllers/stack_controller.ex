@@ -87,7 +87,7 @@ defmodule ImproooveWeb.StackController do
     CommonParameters.authorization()
 
     parameters do
-      project_id(:path, :string, "project ID", required: true)
+      projectId(:path, :string, "project ID", required: true)
       type(:query, :string, "type of stack", required: true, enum: ["LOG", "FEEDBACK"])
     end
 
