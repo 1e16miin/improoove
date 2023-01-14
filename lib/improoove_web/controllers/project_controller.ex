@@ -88,6 +88,13 @@ defmodule ImproooveWeb.ProjectController do
     |> Map.put(:feedback_count, feedback_count)
   end
 
+  def parse_args(args) do
+    parsed_args = Map.update!(args, "limit", fn limit -> String.to_integer(limit) end)
+    with false <- Map.has_key?(parsed_args, "cursor") do
+      Map.put(parsed_args, "cursor", nil)
+    end
+  end
+
   swagger_path :index do
     get("/api/project/index")
     summary("Query for projects")
@@ -98,12 +105,9 @@ defmodule ImproooveWeb.ProjectController do
     CommonParameters.authorization()
     CommonParameters.pagination()
 
-    # parameters do
-    #   status(:query, :string, "status of project",
-    #     required: true,
-    #     enum: ["PROCEEDING", "FINISHED"]
-    #   )
-    # end
+    parameters do
+      status(:query, :string, "status of project", enum: ["PROCEEDING", "FINISHED"])
+    end
 
     response(200, "OK", Schema.ref(:Projects))
     response(400, "Bad Request")
@@ -112,7 +116,9 @@ defmodule ImproooveWeb.ProjectController do
   end
 
   def index(%Plug.Conn{assigns: %{user_id: user_id}} = conn, args) do
-    %{entries: entries, metadata: page_info} = Projects.list_projects(user_id, args)
+    parsed_args = parse_args(args)
+    IO.inspect(parsed_args)
+    %{entries: entries, metadata: page_info} = Projects.list_projects(user_id, parsed_args)
     projects = Enum.map(entries, fn project -> make_project(project) end)
     render(conn, "index.json", projects: projects, page_info: page_info)
   end

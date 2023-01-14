@@ -17,6 +17,36 @@ defmodule Improoove.Projects do
       [%Project{}, ...]
 
   """
+
+  def list_projects(user_id, %{"cursor" => cursor, "limit" => limit, "status" => "FINISHED"}) do
+    IO.inspect("1")
+    query =
+      from(p in Project,
+        where: p.user_id == ^user_id and not is_nil(p.end_date),
+        order_by: [asc: p.end_date]
+      )
+
+    Repo.paginate(query,
+      after: cursor,
+      cursor_fields: [end_date: :asc],
+      limit: limit)
+  end
+
+  def list_projects(user_id, %{"cursor" => cursor, "limit" => limit, "status" => "PROCEEDING"}) do
+    IO.inspect("2")
+    query =
+      from(p in Project,
+        where: p.user_id == ^user_id and is_nil(p.end_date),
+        order_by: [desc: p.start_date]
+      )
+
+    Repo.paginate(query,
+      after: cursor,
+      cursor_fields: [start_date: :desc],
+      limit: limit
+    )
+  end
+
   def list_projects(user_id, %{"cursor" => cursor, "limit" => limit}) do
     query =
       from(p in Project,
@@ -27,20 +57,7 @@ defmodule Improoove.Projects do
     Repo.paginate(query,
       after: cursor,
       cursor_fields: [id: :asc],
-      limit: String.to_integer(limit)
-    )
-  end
-
-  def list_projects(user_id, %{"limit" => limit}) do
-    query =
-      from(p in Project,
-        where: p.user_id == ^user_id,
-        order_by: [asc: p.id]
-      )
-
-    Repo.paginate(query,
-      cursor_fields: [id: :asc],
-      limit: String.to_integer(limit)
+      limit: limit
     )
   end
 
