@@ -98,12 +98,12 @@ defmodule ImproooveWeb.ProjectController do
     CommonParameters.authorization()
     CommonParameters.pagination()
 
-    parameters do
-      status(:query, :string, "status of project",
-        required: true,
-        enum: ["PROCEEDING", "FINISHED"]
-      )
-    end
+    # parameters do
+    #   status(:query, :string, "status of project",
+    #     required: true,
+    #     enum: ["PROCEEDING", "FINISHED"]
+    #   )
+    # end
 
     response(200, "OK", Schema.ref(:Projects))
     response(400, "Bad Request")
