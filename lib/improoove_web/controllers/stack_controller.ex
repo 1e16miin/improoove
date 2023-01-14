@@ -87,7 +87,7 @@ defmodule ImproooveWeb.StackController do
     CommonParameters.authorization()
 
     parameters do
-      projectId(:path, :string, "project ID", required: true)
+      project_id(:path, :integer, "project ID", required: true)
       type(:query, :string, "type of stack", required: true, enum: ["LOG", "FEEDBACK"])
     end
 
@@ -138,7 +138,7 @@ defmodule ImproooveWeb.StackController do
     CommonParameters.authorization()
 
     parameters do
-      id(:path, :string, "stack ID", required: true)
+      id(:path, :integer, "stack ID", required: true)
     end
 
     response(200, "OK", Schema.ref(:Stack))
@@ -162,7 +162,7 @@ defmodule ImproooveWeb.StackController do
     CommonParameters.authorization()
 
     parameters do
-      id(:path, :string, "stack ID", required: true)
+      id(:path, :integer, "stack ID", required: true)
       stack(:body, Schema.ref(:UpdateStackInput), "partial project attributes")
     end
 

@@ -42,7 +42,7 @@ defmodule ImproooveWeb.ProjectController do
             objective(:string, "goal of project")
             endDate(:string, "when finish project", format: "ISO-8601")
             startDate(:string, "when start project", format: "ISO-8601")
-            name(:string, "name of project", required: true)
+            name(:string, "name of project")
           end
 
           example(%{
@@ -97,6 +97,14 @@ defmodule ImproooveWeb.ProjectController do
     operation_id("list_projects")
     CommonParameters.authorization()
     CommonParameters.pagination()
+
+    parameters do
+      status(:query, :string, "status of project",
+        required: true,
+        enum: ["PROCEEDING", "FINISHED"]
+      )
+    end
+
     response(200, "OK", Schema.ref(:Projects))
     response(400, "Bad Request")
     response(401, "Unauthorized")
@@ -151,7 +159,7 @@ defmodule ImproooveWeb.ProjectController do
     CommonParameters.authorization()
 
     parameters do
-      id(:path, :string, "project ID", required: true)
+      id(:path, :integer, "project ID", required: true)
     end
 
     response(200, "OK", Schema.ref(:Project))
@@ -169,7 +177,7 @@ defmodule ImproooveWeb.ProjectController do
   end
 
   swagger_path :update do
-    patch("/api/project/:id")
+    patch("/api/project/{id}")
     summary("update project")
     description("update project. This operation supports updating")
     produces("application/json")
@@ -178,21 +186,28 @@ defmodule ImproooveWeb.ProjectController do
     CommonParameters.authorization()
 
     parameters do
-      id(:path, :string, "project ID", required: true)
+      id(:path, :integer, "project ID", required: true)
       project(:body, Schema.ref(:UpdateProjectInput), "partial project attributes")
     end
 
     response(201, "OK", Schema.ref(:Project))
+    response(400, "Bad Request")
     response(401, "Unauthorized")
     response(404, "Not Found")
     response(422, "Unprocessable Entity")
   end
 
   def update(conn, %{"id" => id} = project_param) do
+    IO.inspect(project_param)
+
     project = Projects.get_project!(id)
 
     with {:ok, %Project{} = project} <- Projects.update_project(project, project_param) do
-      render(conn, "show.json", project: project)
+      updated_project =
+        project
+        |> make_project()
+
+      render(conn, "show.json", project: updated_project)
     end
   end
 
@@ -206,7 +221,7 @@ defmodule ImproooveWeb.ProjectController do
     CommonParameters.authorization()
 
     parameters do
-      id(:path, :string, "project ID", required: true)
+      id(:path, :integer, "project ID", required: true)
     end
 
     response(204, "No Content")

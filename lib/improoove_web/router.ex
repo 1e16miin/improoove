@@ -29,8 +29,8 @@ defmodule ImproooveWeb.Router do
     end
 
     scope "/stack" do
-      get "/index", StackController, :index
       get "/index/:project_id", StackController, :list
+      get "/index", StackController, :index
       get "/:id", StackController, :show
       post "/", StackController, :create
       patch "/:id", StackController, :update
