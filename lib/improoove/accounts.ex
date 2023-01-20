@@ -39,10 +39,7 @@ defmodule Improoove.Accounts do
 
   """
   def create_user() do
-    attrs = %{"uid" => UUID.uuid4()}
-
     %User{}
-    |> User.changeset(attrs)
     |> Repo.insert()
   end
 end
