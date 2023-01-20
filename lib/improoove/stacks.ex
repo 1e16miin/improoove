@@ -6,7 +6,7 @@ defmodule Improoove.Stacks do
   import Ecto.Query, warn: false
   alias Improoove.Repo
 
-  alias Improoove.Stacks.Stack
+  alias Improoove.Schema.Stack
 
   @doc """
   Returns the list of stacks.
@@ -45,6 +45,13 @@ defmodule Improoove.Stacks do
   def list_stacks(_user_id, %{"project_id" => project_id, "type" => type}) do
     Stack
     |> where(type: ^type)
+    |> where(project_id: ^project_id)
+    |> order_by(desc: :id)
+    |> Repo.all()
+  end
+
+  def list_stacks(_user_id, %{"project_id" => project_id}) do
+    Stack
     |> where(project_id: ^project_id)
     |> order_by(desc: :id)
     |> Repo.all()
@@ -126,5 +133,10 @@ defmodule Improoove.Stacks do
   """
   def delete_stack(%Stack{} = stack) do
     Repo.delete(stack)
+  end
+
+  def delete_stacks_by_project_id(project_id) do
+    from(s in Stack, where: s.project_id == ^project_id)
+    |> Repo.delete_all()
   end
 end

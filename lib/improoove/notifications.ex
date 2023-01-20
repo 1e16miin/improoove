@@ -1,4 +1,4 @@
-defmodule Improoove.Accounts do
+defmodule Improoove.Notifications do
   @moduledoc """
   The Accounts context.
   """
@@ -6,7 +6,7 @@ defmodule Improoove.Accounts do
   import Ecto.Query, warn: false
   alias Improoove.Repo
 
-  alias Improoove.Schema.User
+  alias Improoove.Schema.Device
 
   @doc """
   Gets a single user.
@@ -22,8 +22,8 @@ defmodule Improoove.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user_by_uid(uid) do
-    Repo.get_by(User, uid: uid)
+  def get_devices_by_user_id(user_id) do
+    Repo.all(Device, user_id: user_id)
   end
 
   @doc """
@@ -38,11 +38,9 @@ defmodule Improoove.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_user() do
-    attrs = %{"uid" => UUID.uuid4()}
-
-    %User{}
-    |> User.changeset(attrs)
+  def create_device(attrs) do
+    %Device{}
+    |> Device.changeset(attrs)
     |> Repo.insert()
   end
 end

@@ -6,7 +6,7 @@ defmodule Improoove.Tags do
   import Ecto.Query, warn: false
   alias Improoove.Repo
 
-  alias Improoove.Tags.Tag
+  alias Improoove.Schema.Tag
 
   @doc """
   Returns the list of tags.
