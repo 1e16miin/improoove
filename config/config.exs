@@ -68,10 +68,6 @@ config :phoenix, :json_library, Jason
 config :phoenix_swagger, json_library: Jason
 config :phoenix, :format_encoders, json: Casex.CamelCaseEncoder
 
-config :fcmex,
-  server_key:
-    "BNHj6pSMfHuyBRyWCEpAUSNFiKqYXveg7K6leo9s0TZIOXvyHUF0BK1Qy2WigIB6ftho_DT7FX1rCOc3RK00FFM"
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

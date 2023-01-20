@@ -48,10 +48,12 @@ defmodule Improoove.MixProject do
       {:phoenix_swagger, "~> 0.8"},
       {:ex_json_schema, "~> 0.5"},
       {:casex, "~> 0.4.2"},
-      {:fcmex, "~> 0.6.0"},
+      {:pigeon, "~> 1.6.1"},
+      {:kadabra, "~> 0.6.0"},
       {:plug, "~> 1.0"},
       {:corsica, "~> 1.0"},
-      {:uuid, "~> 1.1"}
+      {:uuid, "~> 1.1"},
+      {:sched_ex, "~> 1.0"}
     ]
   end
 
