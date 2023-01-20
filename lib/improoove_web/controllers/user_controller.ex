@@ -3,7 +3,7 @@ defmodule ImproooveWeb.UserController do
   use PhoenixSwagger
 
   alias Improoove.Accounts
-  alias Improoove.Accounts.User
+  alias Improoove.Schema.User
 
   action_fallback ImproooveWeb.FallbackController
 

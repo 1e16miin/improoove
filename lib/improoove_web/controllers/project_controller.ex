@@ -4,7 +4,7 @@ defmodule ImproooveWeb.ProjectController do
   import Plug.Conn
 
   alias Improoove.Projects
-  alias Improoove.Projects.Project
+  alias Improoove.Schema.Project
   alias Improoove.Stacks
 
   action_fallback ImproooveWeb.FallbackController
@@ -204,8 +204,6 @@ defmodule ImproooveWeb.ProjectController do
   end
 
   def update(conn, %{"id" => id} = project_param) do
-    IO.inspect(project_param)
-
     project = Projects.get_project!(id)
 
     with {:ok, %Project{} = project} <- Projects.update_project(project, project_param) do

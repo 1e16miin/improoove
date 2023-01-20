@@ -2,7 +2,7 @@ defmodule ImproooveWeb.ReminderController do
   use ImproooveWeb, :controller
 
   alias Improoove.Reminders
-  alias Improoove.Reminders.Reminder
+  alias Improoove.Schema.Reminder
 
   action_fallback ImproooveWeb.FallbackController
 

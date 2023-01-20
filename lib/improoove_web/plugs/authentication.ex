@@ -1,5 +1,5 @@
 defmodule ImproooveWeb.Plugs.Authentication do
-  alias Improoove.Accounts.User
+  alias Improoove.Schema.User
   import Plug.Conn
 
   def init(opts) do
@@ -15,7 +15,6 @@ defmodule ImproooveWeb.Plugs.Authentication do
     else
       _ ->
         conn
-        |> IO.inspect()
         |> put_req_header("www-authenticate", authorization)
         |> resp(401, "Unauthorized")
         |> halt()

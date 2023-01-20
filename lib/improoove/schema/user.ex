@@ -1,4 +1,4 @@
-defmodule Improoove.Accounts.User do
+defmodule Improoove.Schema.User do
   use Ecto.Schema
   import Ecto.Changeset
 
