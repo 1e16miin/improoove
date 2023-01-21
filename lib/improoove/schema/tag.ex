@@ -1,4 +1,4 @@
-defmodule Improoove.Tags.Tag do
+defmodule Improoove.Schema.Tag do
   use Ecto.Schema
   import Ecto.Changeset
 

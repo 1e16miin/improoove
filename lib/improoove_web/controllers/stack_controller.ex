@@ -3,7 +3,7 @@ defmodule ImproooveWeb.StackController do
   use PhoenixSwagger
 
   alias Improoove.Stacks
-  alias Improoove.Stacks.Stack
+  alias Improoove.Schema.Stack
 
   action_fallback ImproooveWeb.FallbackController
 

@@ -1,4 +1,4 @@
-defmodule Improoove.Reminders.Reminder do
+defmodule Improoove.Schema.Reminder do
   use Ecto.Schema
   import Ecto.Changeset
 

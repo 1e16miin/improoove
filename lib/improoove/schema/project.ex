@@ -1,6 +1,8 @@
-defmodule Improoove.Projects.Project do
+defmodule Improoove.Schema.Project do
   use Ecto.Schema
   import Ecto.Changeset
+
+  alias Improoove.Schema.Stack
 
   schema "projects" do
     field :color, :string
@@ -9,7 +11,7 @@ defmodule Improoove.Projects.Project do
     field :objective, :string
     field :start_date, :utc_datetime
     field :user_id, :integer
-
+    has_many :stack, Stack
     timestamps([{:inserted_at, :created_at}])
   end
 

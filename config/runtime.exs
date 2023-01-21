@@ -63,6 +63,17 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  fcm_server_key =
+    System.get_env("FCM_SERVER_KEY") ||
+      raise """
+      environment variable FCM_SERVER_KEY is missing.
+      You can generate one by calling: mix phx.gen.secret
+      """
+
+  config :pigeon, :fcm,
+    fcm_default: %{
+      key: fcm_server_key
+    }
   # ## Configuring the mailer
   #
   # In production you need to configure the mailer to use a different adapter.

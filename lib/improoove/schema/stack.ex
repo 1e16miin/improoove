@@ -1,4 +1,5 @@
-defmodule Improoove.Stacks.Stack do
+defmodule Improoove.Schema.Stack do
+  alias Improoove.Schema.Reminder
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,6 +9,8 @@ defmodule Improoove.Stacks.Stack do
     field :type, :string
     field :user_id, :integer
 
+    has_many :reminder, Reminder
+    has_many :tag, Tag
     timestamps([{:inserted_at, :created_at}])
   end
 

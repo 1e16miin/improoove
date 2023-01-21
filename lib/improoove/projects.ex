@@ -6,7 +6,8 @@ defmodule Improoove.Projects do
   import Ecto.Query, warn: false
   alias Improoove.Repo
 
-  alias Improoove.Projects.Project
+  alias Improoove.Schema.Project
+  alias Improoove.Stacks
 
   @doc """
   Returns the list of projects.
@@ -19,7 +20,6 @@ defmodule Improoove.Projects do
   """
 
   def list_projects(user_id, %{"cursor" => cursor, "limit" => limit, "status" => "FINISHED"}) do
-    IO.inspect("1")
     query =
       from(p in Project,
         where: p.user_id == ^user_id and not is_nil(p.end_date),
@@ -29,11 +29,11 @@ defmodule Improoove.Projects do
     Repo.paginate(query,
       after: cursor,
       cursor_fields: [end_date: :asc],
-      limit: limit)
+      limit: limit
+    )
   end
 
   def list_projects(user_id, %{"cursor" => cursor, "limit" => limit, "status" => "PROCEEDING"}) do
-    IO.inspect("2")
     query =
       from(p in Project,
         where: p.user_id == ^user_id and is_nil(p.end_date),

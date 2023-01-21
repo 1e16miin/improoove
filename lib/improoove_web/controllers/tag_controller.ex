@@ -2,7 +2,7 @@ defmodule ImproooveWeb.TagController do
   use ImproooveWeb, :controller
 
   alias Improoove.Tags
-  alias Improoove.Tags.Tag
+  alias Improoove.Schema.Tag
 
   action_fallback ImproooveWeb.FallbackController
 

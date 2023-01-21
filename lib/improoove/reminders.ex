@@ -6,7 +6,7 @@ defmodule Improoove.Reminders do
   import Ecto.Query, warn: false
   alias Improoove.Repo
 
-  alias Improoove.Reminders.Reminder
+  alias Improoove.Schema.Reminder
 
   @doc """
   Returns the list of reminders.
