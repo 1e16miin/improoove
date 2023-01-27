@@ -11,7 +11,8 @@ defmodule Improoove.Schema.Project do
     field :objective, :string
     field :start_date, :utc_datetime
     field :user_id, :integer
-    has_many :stack, Stack
+
+    has_many :stack, Stack, on_delete: :delete_all
     timestamps([{:inserted_at, :created_at}])
   end
 

@@ -4,6 +4,7 @@ defmodule Improoove.Stacks do
   """
 
   import Ecto.Query, warn: false
+  alias Improoove.Schedulers.Reminder
   alias Improoove.Repo
 
   alias Improoove.Schema.Stack
@@ -21,11 +22,11 @@ defmodule Improoove.Stacks do
     query =
       from s in Stack,
         where: s.user_id == ^user_id,
-        order_by: [desc: s.id]
+        order_by: [desc: s.updated_at]
 
     Repo.paginate(query,
       after: cursor,
-      cursor_fields: [id: :desc],
+      cursor_fields: [updated_at: :desc],
       limit: String.to_integer(limit)
     )
   end
@@ -34,10 +35,10 @@ defmodule Improoove.Stacks do
     query =
       from s in Stack,
         where: s.user_id == ^user_id,
-        order_by: [desc: s.id]
+        order_by: [desc: s.updated_at]
 
     Repo.paginate(query,
-      cursor_fields: [id: :desc],
+      cursor_fields: [updated_at: :desc],
       limit: String.to_integer(limit)
     )
   end
@@ -46,14 +47,22 @@ defmodule Improoove.Stacks do
     Stack
     |> where(type: ^type)
     |> where(project_id: ^project_id)
-    |> order_by(desc: :id)
+    |> order_by(desc: :updated_at)
     |> Repo.all()
   end
 
   def list_stacks(_user_id, %{"project_id" => project_id}) do
     Stack
     |> where(project_id: ^project_id)
-    |> order_by(desc: :id)
+    |> order_by(desc: :updated_at)
+    |> Repo.all()
+  end
+
+  def list_stacks(_user_id, %{"is_sent" => is_sent}) do
+    Stack
+    |> where(is_sent: ^is_sent)
+    |> where(not is_nil(:sent_at))
+    |> order_by(asc: :sent_at)
     |> Repo.all()
   end
 
@@ -117,6 +126,16 @@ defmodule Improoove.Stacks do
     stack
     |> Stack.changeset(attrs)
     |> Repo.update()
+  end
+
+  def update_stack(%Stack{sent_at: sent_at, id: id} = stack, %{sent_at: nil} = attrs) when not is_nil(sent_at) do
+
+    stack
+    |> Stack.changeset(attrs)
+    |> Repo.update()
+
+    Reminder.cancel_scheduled_item(Improoove.Reminder, "reminder-stack-#{id}")
+
   end
 
   @doc """
