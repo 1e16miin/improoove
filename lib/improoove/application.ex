@@ -12,10 +12,10 @@ defmodule Improoove.Application do
       Improoove.Repo,
       # Start the Telemetry supervisor
       ImproooveWeb.Telemetry,
-      # Start the PubSub system
-      {Phoenix.PubSub, name: Improoove.PubSub},
       # Start the Endpoint (http/https)
-      ImproooveWeb.Endpoint
+      ImproooveWeb.Endpoint,
+
+      Improoove.Schedulers.Reminder
       # Start a worker by calling: Improoove.Worker.start_link(arg)
       # {Improoove.Worker, arg}
     ]
