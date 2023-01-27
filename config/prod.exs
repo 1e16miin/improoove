@@ -15,6 +15,8 @@ config :improoove, ImproooveWeb.Endpoint, cache_static_manifest: "priv/static/ca
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :my_app, MyApp.Web.Endpoint,
+  url: [host: {:system, "HOST"}, port: {:system, "PORT"}]
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
