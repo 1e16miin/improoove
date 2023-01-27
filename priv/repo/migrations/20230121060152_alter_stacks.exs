@@ -7,6 +7,6 @@ defmodule Improoove.Repo.Migrations.AlterStacks do
       add :sent_at, :utc_datetime
     end
 
-    create_if_not_exists index("stacks", [:updated_at, :id], [unique: true])
+    create_if_not_exists index("stacks", [:updated_at, :id], unique: true)
   end
 end
