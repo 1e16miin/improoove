@@ -18,7 +18,7 @@ defmodule ImproooveWeb.ProjectController do
 
           properties do
             color(:string, "project main color", required: true)
-            objective(:string, "goal of project", required: true)
+            objective(:string, "goal of project")
             endDate(:string, "when finish project", format: "ISO-8601")
             startDate(:string, "when start project", format: "ISO-8601")
             name(:string, "name of project", required: true)
