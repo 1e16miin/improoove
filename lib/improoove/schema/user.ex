@@ -3,15 +3,16 @@ defmodule Improoove.Schema.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :uid, Ecto.UUID, default: Ecto.UUID.generate()
+    field :uid, Ecto.UUID
 
     timestamps([{:inserted_at, :created_at}])
   end
 
   @doc false
-  def changeset(user, attrs) do
+  def changeset(user) do
     user
-    |> cast(attrs, [])
+    |> Map.put(:uid, Ecto.UUID.generate())
+    |> cast(%{}, [])
     |> validate_required([])
   end
 end
