@@ -1,5 +1,4 @@
 defmodule Improoove.Schema.Stack do
-  alias Improoove.Schema.Tag
   use Ecto.Schema
   import Ecto.Changeset
 
