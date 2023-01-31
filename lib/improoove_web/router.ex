@@ -16,6 +16,7 @@ defmodule ImproooveWeb.Router do
 
     scope "/account" do
       post "/", UserController, :create
+      get "/:uid", UserController, :show
     end
 
     pipe_through :authenticated

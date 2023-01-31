@@ -40,4 +40,32 @@ defmodule ImproooveWeb.UserController do
       |> render("show.json", user: user)
     end
   end
+
+  swagger_path :show do
+    get("/api/account/{uid}")
+    summary("Query for Account")
+    description("Query for Account. This operation supports filtering")
+    produces("application/json")
+    tag("Account")
+    operation_id("get_user_by_uid")
+
+    parameters do
+      uid(:path, :string, "encoded user id", required: true)
+    end
+
+    response(200, "OK", Schema.ref(:User))
+    response(401, "Unauthorized")
+  end
+
+  def show(conn, %{"uid" => uid}) do
+    with {:ok, uid} <- Base.decode64(uid), %User{} = user <- Accounts.get_user_by_uid(uid) do
+      render(conn, "show.json", user: user)
+    else
+      _ ->
+        conn
+        |> put_req_header("www-authenticate", uid)
+        |> resp(401, "Unauthorized")
+        |> halt()
+    end
+  end
 end
