@@ -20,6 +20,6 @@ defmodule Improoove.Schema.Project do
   def changeset(project, attrs) do
     project
     |> cast(attrs, [:user_id, :name, :objective, :start_date, :end_date, :color])
-    |> validate_required([:user_id, :name, :objective, :color])
+    |> validate_required([:user_id, :name, :color])
   end
 end

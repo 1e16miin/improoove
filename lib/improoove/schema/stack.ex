@@ -11,7 +11,7 @@ defmodule Improoove.Schema.Stack do
     field :is_sent, :boolean
     field :sent_at, :utc_datetime
 
-    # _has_many :tag, Tag, where: [type: :LOG], foreign_key: :log_id, references: :id, on_delete: :delete_all
+    #_has_many :tag, Tag, where: [type: :LOG], foreign_key: :log_id, references: :id, on_delete: :delete_all
     timestamps([{:inserted_at, :created_at}])
   end
 

@@ -40,6 +40,7 @@ defmodule Improoove.Accounts do
   """
   def create_user() do
     %User{}
+    |> User.changeset()
     |> Repo.insert()
   end
 end
