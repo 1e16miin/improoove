@@ -14,8 +14,7 @@ defmodule Improoove.Application do
       ImproooveWeb.Telemetry,
       # Start the Endpoint (http/https)
       ImproooveWeb.Endpoint,
-
-      Improoove.Schedulers.Reminder
+      Improoove.Scheduler.ReminderWorker
       # Start a worker by calling: Improoove.Worker.start_link(arg)
       # {Improoove.Worker, arg}
     ]

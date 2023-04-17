@@ -13,7 +13,7 @@ defmodule Improoove.Schema.Device do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:id, :user_id, :os])
-    |> validate_required([:id, :user_id, :os])
+    |> cast(attrs, [:id, :user_id, :os, :token])
+    |> validate_required([:id, :user_id, :os, :token])
   end
 end
