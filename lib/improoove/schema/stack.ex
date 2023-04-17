@@ -1,5 +1,5 @@
 defmodule Improoove.Schema.Stack do
-  alias Improoove.Schema.Tag
+  alias Improoove.Schema.Reminder
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,10 +8,8 @@ defmodule Improoove.Schema.Stack do
     field :project_id, :integer
     field :type, Ecto.Enum, values: [:FEEDBACK, :LOG]
     field :user_id, :integer
-    field :is_sent, :boolean
-    field :sent_at, :utc_datetime
 
-    #_has_many :tag, Tag, where: [type: :LOG], foreign_key: :log_id, references: :id, on_delete: :delete_all
+    has_many :reminder, Reminder, foreign_key: :stack_id, references: :id, on_delete: :delete_all
     timestamps([{:inserted_at, :created_at}])
   end
 

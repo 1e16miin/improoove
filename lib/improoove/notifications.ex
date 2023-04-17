@@ -1,55 +1,70 @@
-# defmodule Improoove.Notifications do
-#   @moduledoc """
-#   The Accounts context.
-#   """
+defmodule Improoove.Notifications do
+  @moduledoc """
+  The Accounts context.
+  """
 
-#   import Ecto.Query, warn: false
-#   alias Improoove.Stacks
-#   alias Improoove.Repo
+  import Ecto.Query, warn: false
+  alias Improoove.Repo
 
-#   alias Improoove.Schema.Device
+  alias Improoove.Schema.Device
 
-#   @doc """
-#   Gets a single user.
+  @doc """
+  Gets a single user.
 
-#   Raises `Ecto.NoResultsError` if the User does not exist.
+  Raises `Ecto.NoResultsError` if the User does not exist.
 
-#   Examples
+  Examples
 
-#       iex> get_user!(123)
-#       %User{}
+      iex> get_user!(123)
+      %User{}
 
-#       iex> get_user!(456)
-#       ** (Ecto.NoResultsError)
+      iex> get_user!(456)
+      ** (Ecto.NoResultsError)
 
-#   """
-#   def get_devices_by_user_id(user_id) do
-#     Repo.all(Device, user_id: user_id)
-#   end
+  """
 
-#   def push_notifications(user_id, msg) do
-#     device_tokens =
-#       get_devices_by_user_id(user_id)
-#       |> Enum.map(& &1["token"])
+  def create_device(user_id, attrs) do
+    attrs =
+      attrs
+      |> Map.put(:user_id, user_id)
 
-#     Pigeon.FCM.Notification.new(device_tokens, msg)
-#   end
+    %Device{}
+    |> Device.changeset(attrs)
+    |> Repo.insert()
+  end
 
-#   @doc """
-#   Creates a user.
+  def get_devices_by_user_id(user_id) do
+    Repo.all(Device, user_id: user_id)
+  end
 
-#   ## Examples
+  def push_notifications(user_id, msg) do
+    device_tokens =
+      get_devices_by_user_id(user_id)
+      |> Enum.map(& &1["token"])
 
-#       iex> create_user(%{field: value})
-#       {:ok, %User{}}
+    notifications = Pigeon.FCM.Notification.new(device_tokens, msg)
 
-#       iex> create_user(%{field: bad_value})
-#       {:error, %Ecto.Changeset{}}
+    Pigeon.FCM.push(
+      notifications,
+      on_response: fn x -> IO.inspect(x) end
+    )
+  end
 
-#   """
-#   def create_device(attrs) do
-#     %Device{}
-#     |> Device.changeset(attrs)
-#     |> Repo.insert()
-#   end
-# end
+  @doc """
+  Creates a user.
+
+  ## Examples
+
+      iex> create_user(%{field: value})
+      {:ok, %User{}}
+
+      iex> create_user(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_device(attrs) do
+    %Device{}
+    |> Device.changeset(attrs)
+    |> Repo.insert()
+  end
+end

@@ -53,7 +53,8 @@ defmodule Improoove.MixProject do
       {:plug, "~> 1.0"},
       {:corsica, "~> 1.0"},
       {:uuid, "~> 1.1"},
-      {:sched_ex, "~> 1.0"}
+      {:sched_ex, "~> 1.0"},
+      {:ecto_soft_delete, "~> 2.0"}
     ]
   end
 

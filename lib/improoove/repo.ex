@@ -7,4 +7,6 @@ defmodule Improoove.Repo do
     limit: 10,
     maximum_limit: 100,
     include_total_count: true
+
+  use Ecto.SoftDelete.Repo
 end
