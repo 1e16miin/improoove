@@ -74,6 +74,7 @@ if config_env() == :prod do
     fcm_default: %{
       key: fcm_server_key
     }
+
   # ## Configuring the mailer
   #
   # In production you need to configure the mailer to use a different adapter.

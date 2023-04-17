@@ -128,15 +128,14 @@ defmodule Improoove.Stacks do
     |> Repo.update()
   end
 
-  def update_stack(%Stack{sent_at: sent_at, id: id} = stack, %{sent_at: nil} = attrs) when not is_nil(sent_at) do
+  # def update_stack(%Stack{sent_at: sent_at, id: id} = stack, %{sent_at: nil} = attrs)
+  #     when not is_nil(sent_at) do
+  #   stack
+  #   |> Stack.changeset(attrs)
+  #   |> Repo.update()
 
-    stack
-    |> Stack.changeset(attrs)
-    |> Repo.update()
-
-    Reminder.cancel_scheduled_item(Improoove.Reminder, "reminder-stack-#{id}")
-
-  end
+  #   Reminder.cancel_scheduled_item(Improoove.Reminder, "reminder-stack-#{id}")
+  # end
 
   @doc """
   Deletes a stack.
